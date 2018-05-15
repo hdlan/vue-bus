@@ -11,7 +11,7 @@
                         <span class="from">{{item.trans.join('-')}}</span>
                     </div>
                     <div class="tit">
-                        <span class="time_s">约{{item.time}}</span>
+                        <span class="time_s">约 {{item.time}} 分钟</span>
                         <span class="price">票价:{{item.cost}}元</span>
                     </div>
                 </div>

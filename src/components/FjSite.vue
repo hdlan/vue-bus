@@ -13,7 +13,7 @@
           <router-link :to="{ path:'/simpleMap', query: { siteId: item.siteId,  lineName:item.line.substr(0, item.line.indexOf(';')), siteName: item.site}}">
             <div class="site">
               <span>{{item.site}}</span>
-              <span class="sitedistance">{{item.distance}}米</span>
+              <span class="sitedistance">{{item.distance}} 米</span>
             </div>
             <div class="tit">
               <span class="name">{{item.line.substr(0,item.line.indexOf(";"))}}</span>
@@ -119,7 +119,7 @@ export default {
             Vue.set(this.lineSite, index, tips.via_stops)
             Vue.set(this.items[index], 'lineId', tips.id)
             if (tips.id !== '' && undefined !== tips.id) {
-              for (var j = 0; j < tips.via_stops.length; j++) {
+              for (let j = 0; j < tips.via_stops.length; j++) {
                 if (tips.via_stops[j].id === id) {
                   num = j + 1
                   break
@@ -129,7 +129,7 @@ export default {
                 console.log('下一站：', num)
                 Vue.set(this.items[index], 'next_site', tips.via_stops[num].name)
               } else {
-                Vue.set(this.items[index], 'next_site', '无')
+                Vue.set(this.items[index], 'next_site', '当前站为终点站')
               }
             }
           } else {

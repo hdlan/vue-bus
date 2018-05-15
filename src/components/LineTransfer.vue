@@ -44,7 +44,7 @@
                     <br/>路线</div>
             </div>
         </div>
-        <div id="about"  v-bind:style="{display: about}">
+        <div  v-bind:style="{display: about}">
             <div class="pop_list" id="popsiteList">
                 <div class="pop_list_title">
                     <span class="apptit"></span>
@@ -137,7 +137,7 @@ export default {
           var tips = result.tips
           this.hisTips = []
           console.log('tips', tips)
-          for (var i = 0; i < tips.length; i++) {
+          for (let i = 0; i < tips.length; i++) {
             if (tips[i].location !== '' && undefined !== tips[i].location && tips[i].district.substr(0, 6) === '江苏省苏州市') {
               this.hisTips.push({
                 lng: tips[i].location.lng,
@@ -295,7 +295,7 @@ export default {
   width:0.52rem;
   display: block;
   margin:0 auto;
-  margin-bottom: 0.1rem;
+  margin-bottom: -0.2rem;
 }
 /*历史记录*/
 .pop_list {

@@ -162,6 +162,7 @@ export default {
           tips.via_stops.forEach((item, index) => {
             if (item.id === this.siteId) {
               this.ind = index
+              this.showActive(this.ind, this.siteName)
               console.log(index)
             }
             this.siteList.push({
