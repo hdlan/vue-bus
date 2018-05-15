@@ -1,16 +1,14 @@
 <template>
     <div class="wapper">
         <div id="home" v-bind:style="{display: home}">
-            <a href="/bus/search">
-                <div class="pop_list_title">
-                    <span class="apptit">实时公交</span>
-                    <div class="input_area" id="shows">
-                        <input placeholder="请输入地点" />
-                    </div>
+            <!-- <div class="pop_list_title">
+                <span class="apptit">实时公交</span>
+                <div class="input_area" id="shows">
+                    <input placeholder="请输入地点" />
                 </div>
-            </a>
-            <form method="get" id="findSearchForm" action="">
-                <input type="hidden" name="busType" value="1" />
+            </div> -->
+            <searchBox></searchBox>
+            <form method="get" action="">
                 <div class="search_wapper">
                     <div class="search_area">
                         <div class="row" v-on:click="Toggle('from')">
@@ -27,20 +25,6 @@
                     </div>
                 </div>
             </form>
-            <div class="tishi" style="display:none">
-                <div class="pormpt">
-                    <div class="text">
-                        <span class="bar"></span>
-                        <span style="width:35%">您可以搜索</span>
-                        <span class="bar"></span>
-                    </div>
-                    <div class="icon">
-                        <span><img src="../assets/line/pop_line.png">线路</span>
-                        <span><img src="../assets/line/pop_site.png">车站</span>
-                        <span><img src="../assets/line/pop_postion.png">地点</span>
-                    </div>
-                </div>
-            </div>
             <div class="pop_list" id="his_list" style="padding-top: 0">
                 <!--                 <div class="his">历史记录</div>
                 <ul>
@@ -69,7 +53,7 @@
                     </div>
                     <span class="closespan" v-on:click="homeShow">取消</span>
                 </div>
-<!--                 <div class="tishi">
+                <div class="tishi" v-if="isActive">
                     <div class="pormpt">
                         <div class="text">
                             <span class="bar"></span>
@@ -82,7 +66,7 @@
                             <span><img src="../assets/line/pop_postion.png">地点</span>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <div class="scroll">
                     <div class="title">
                         <span></span>
@@ -101,6 +85,7 @@
 
 <script>
 import AMap from 'AMap'
+import searchBox from './searchBox.vue'
 import Router from '../router/index.js'
 
 export default {
@@ -122,7 +107,8 @@ export default {
         to: '',
         toAddressLat: '',
         toAddressLng: ''
-      }
+      },
+      isActive: true
     }
   },
   mounted: function () {
@@ -135,6 +121,9 @@ export default {
       this.home = 'none'
       this.about = 'block'
       this.oneorTow = status
+      this.keywords = ''
+      this.isActive = true
+      this.hisTips = []
     },
     homeShow: function () {
       this.home = 'block'
@@ -142,6 +131,7 @@ export default {
     },
     showInput: function () {
       console.log(this.keywords)
+      this.isActive = false
       this.autocomplete.search(this.keywords, function (status, result) {
         if (status === 'complete' && result.info === 'OK') {
           var tips = result.tips
@@ -190,6 +180,9 @@ export default {
       this.end.toAddressLat = fromAddressLat
       console.log(this.start, this.end)
     }
+  },
+  components: {
+    searchBox
   }
 }
 </script>
@@ -202,7 +195,6 @@ export default {
   background: #fff;
   color:#999;
   font-size: 0.32rem;
-  margin-top:0.88rem;
 }
 .search_wapper .search_area{
   height: 1.8rem;
@@ -264,6 +256,46 @@ export default {
     display: inline-block; 
     height: 1.8rem;
   line-height: 1.8rem;
+}
+/*提示*/
+.tishi{
+  width:100%;
+  height:4rem;
+  color:#999;
+  text-align: center;
+  font-size: 0;
+  padding-top:1rem;
+}
+.tishi span{
+  display: inline-block;
+  width:33%;
+}
+.tishi .pormpt{
+  width:60%;
+  margin:0 auto;
+}
+.tishi .text{
+  height:1.4rem;
+  line-height: 1.4rem;
+  font-size: 0.28rem;
+  color:#999;
+}
+.tishi .bar{
+  height:0.02rem;
+  border-top:0.02rem solid #999;
+  width:20%;
+  vertical-align: middle;
+}
+.tishi .icon span{
+    width:33%;
+  font-size: 0.24rem;
+  color:#999;
+}
+.tishi .icon img{
+  width:0.52rem;
+  display: block;
+  margin:0 auto;
+  margin-bottom: 0.1rem;
 }
 /*历史记录*/
 .pop_list {

@@ -109,6 +109,7 @@ export default {
             if (item.id === this.siteId) {
               this.ind = index
               console.log(index)
+              this.showActive(this.ind, this.siteName)
             }
             this.siteList.push({
               siteName: item.name,

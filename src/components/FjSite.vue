@@ -1,17 +1,13 @@
 <template>
   <div class="wapper">
     <div>
-    <div class="search_wapper">
-      <div class="search">
-        <span>查公交，搜路线</span>
-      </div>
-    </div>
-      <div class="pop_list_title">
+    <searchBox></searchBox>
+      <!-- <div class="pop_list_title">
         <span class="apptit">实时公交</span>
         <div class="input_area" id="address_input">
           <input placeholder="请输入站点或线路" />
         </div>
-      </div>
+      </div> -->
     <div class="line_list" >
         <div class="part" v-for="item in items">
           <router-link :to="{ path:'/simpleMap', query: { siteId: item.siteId,  lineName:item.line.substr(0, item.line.indexOf(';')), siteName: item.site}}">
@@ -50,6 +46,7 @@
 import AMap from 'AMap'
 import Vue from 'Vue'
 import axios from 'axios'
+import searchBox from './searchBox.vue'
 
 export default {
   name: 'FjSite',
@@ -82,13 +79,14 @@ export default {
         placeSearch.searchNearBy('公交站点', [120.6400961887, 31.1411187922], 1500, function (status, result) {
           if (status === 'complete' && result.info === 'OK') {
             var pois = result.poiList.pois
+            var random = [4, 4, 24, 14]
             pois.forEach((item, index) => {
               this.items.push({
                 site: item.name.substr(0, item.name.indexOf('(')),
                 line: item.address,
                 distance: item.distance,
                 next_site: '',
-                sitenum: parseInt(10 * Math.random()),
+                sitenum: random[index],
                 siteId: item.id
               })
               this.lineInfo(item.address.substr(0, item.address.indexOf(';') - 1), item.id, index)
@@ -114,7 +112,7 @@ export default {
           console.log(status)
           if (status === 'complete' && result.info === 'OK') {
             var tips = result.lineInfo[0]
-            var num
+            var num = ''
             this.isShow = true
             console.log('posi:', tips, id, index)
             Vue.set(this.lineInfos, index, tips)
@@ -140,6 +138,9 @@ export default {
         }.bind(this))
       }.bind(this, linename, id, index))
     }
+  },
+  components: {
+    searchBox
   }
 }
 </script>
@@ -197,35 +198,7 @@ export default {
   background-size: 0.36rem 0.36rem;
   border: none;
 }
-/*旧搜索框*/
-.search_wapper{
-  background:#36A3F9;
-  height:0.88rem;
-  width:100%;
-  padding-top:0.14rem;
-  position: fixed;
-  top:0;
-  left: 0;
-}
-.search{
-  text-align: center;
-    margin:0 auto;
-    border-radius: 2rem;
-    height:0.6rem;
-    width:6.9rem;
-    background:#88bfec;
-    font-size: 0.28rem;
-    color:#fff;
-
-}
-.search_wapper  span{
-    padding-left:0.56rem;
-    line-height: 0.6rem;
-    background: url(../assets/line/search2.png) no-repeat left;
-    background-size: 0.36rem;
-}
 .line_list{
-  margin-top:0.88rem;
 }
 .line_list .part{
   background: #fff;
